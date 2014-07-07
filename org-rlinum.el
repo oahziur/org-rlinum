@@ -109,8 +109,12 @@ list."
   "Toggle between org-rlinum mode and normal relative line mode."
   (interactive)
   (if (eq linum-format 'org-rlinum-normal)
-      (setq linum-format 'org-rlinum-org)
-    (setq linum-format 'org-rlinum-normal)))
+      (progn
+        (setq linum-format 'org-rlinum-org)
+        (message "org-rlinum-org"))
+    (progn
+      (setq linum-format 'org-rlinum-normal)
+      (message "org-rlinum-normal"))))
 
 (defun org-rlinum-relative-toggle ()
   "Display non-relative number on fringe."
