@@ -65,7 +65,11 @@
         (incf rsize)
         (add-to-list 'org-rlinum-nlist (line-number-at-pos))
         (line-move-visual -1 t)
-        (incf org-rlinum-ncounter)))))
+        (incf org-rlinum-ncounter))
+        (if (= (point-min) (window-start))
+            (progn
+              (add-to-list 'org-rlinum-nlist (line-number-at-pos))
+              (incf org-rlinum-ncounter))))))
 
 (defun org-rlinum-update-face (line)
   "Update face according to line numbers."
