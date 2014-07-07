@@ -1,4 +1,11 @@
-;; org-rlinum
+;;; org-rlinum.el --- display relative line correctly for org-mode
+
+;; Author: Rui Zhao
+;; Version: 0.0.1
+;; Keywords: convenience
+
+;;; Code:
+
 (eval-when-compile (require 'cl))
 (require 'linum)
 
