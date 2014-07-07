@@ -1,0 +1,13 @@
+* org-rlinum
+  display relative line number for org-mode correctly.
+** usage
+   Add org-rlinum.el to load path
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'org-linum)
+     ;; switch between normal relative line and org relative line.
+     (org-rlinum-toggle)
+
+     ;; switch between relative line and normal linum display.
+     (org-rlinum-relative-toggle)
+   #+END_SRC
