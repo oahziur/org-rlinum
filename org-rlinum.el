@@ -41,27 +41,31 @@
 
 (defun org-rlinum-build-plist ()
   "Build positive lines' list in the windows from bottom up."
-  (setq org-rlinum-pcounter 0)
-  (setq org-rlinum-plist '())
-  (let ((rsize 0))
-    (while (and (<= (point) (window-end))
-                (< (point) (point-max)))
-      (incf rsize)
-      (line-move-visual 1 t)
-      (add-to-list 'org-rlinum-plist (line-number-at-pos)))
-    (setq org-rlinum-plist (reverse org-rlinum-plist))))
+  (save-excursion
+    (beginning-of-line)
+    (setq org-rlinum-pcounter 0)
+    (setq org-rlinum-plist '())
+    (let ((rsize 0))
+      (while (and (<= (point) (window-end))
+                  (< (point) (point-max)))
+        (incf rsize)
+        (line-move-visual 1 t)
+        (add-to-list 'org-rlinum-plist (line-number-at-pos)))
+      (setq org-rlinum-plist (reverse org-rlinum-plist)))))
 
 (defun org-rlinum-build-nlist ()
   "Build negative lines' list in the windows from top down."
-  (setq org-rlinum-ncounter 0)
-  (setq org-rlinum-nlist '())
-  (let ((rsize 0))
-    (while (and (>= (point) (window-start))
-                (> (point) (point-min)))
-      (incf rsize)
-      (add-to-list 'org-rlinum-nlist (line-number-at-pos))
-      (line-move-visual -1 t)
-      (incf org-rlinum-ncounter))))
+  (save-excursion
+    (beginning-of-line)
+    (setq org-rlinum-ncounter 0)
+    (setq org-rlinum-nlist '())
+    (let ((rsize 0))
+      (while (and (>= (point) (window-start))
+                  (> (point) (point-min)))
+        (incf rsize)
+        (add-to-list 'org-rlinum-nlist (line-number-at-pos))
+        (line-move-visual -1 t)
+        (incf org-rlinum-ncounter)))))
 
 (defun org-rlinum-update-face (line)
   "Update face according to line numbers."
@@ -98,13 +102,8 @@
 list."
   (setq org-rlinum-last-pos (line-number-at-pos))
   (when (eq linum-format 'org-rlinum-org)
-    (let ((cur-point (point)))
-      (forward-line 0)
-      (org-rlinum-build-nlist)
-      (goto-char cur-point)
-      (forward-line 0)
-      (org-rlinum-build-plist)
-      (goto-char cur-point))))
+    (org-rlinum-build-nlist)
+    (org-rlinum-build-plist)))
 
 (defun org-rlinum-toggle ()
   "Toggle between org-rlinum mode and normal relative line mode."
