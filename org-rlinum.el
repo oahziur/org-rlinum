@@ -23,6 +23,11 @@
   :type 'string
   :group 'org-rlinum)
 
+(defcustom org-rlinum-org-max 25
+  "Max number of relative line to display for org mode."
+  :type 'number
+  :group 'org-rlinum)
+
 ;; Internal Variables
 (defvar org-rlinum-last-pos 0
   "Store last position.")
@@ -47,7 +52,8 @@
     (setq org-rlinum-plist '())
     (let ((rsize 0))
       (while (and (<= (point) (window-end))
-                  (< (point) (point-max)))
+                  (< (point) (point-max))
+                  (< rsize org-rlinum-org-max))
         (incf rsize)
         (line-move-visual 1 t)
         (add-to-list 'org-rlinum-plist (line-number-at-pos)))
@@ -61,7 +67,8 @@
     (setq org-rlinum-nlist '())
     (let ((rsize 0))
       (while (and (>= (point) (window-start))
-                  (> (point) (point-min)))
+                  (> (point) (point-min))
+                  (<= rsize org-rlinum-org-max))
         (incf rsize)
         (add-to-list 'org-rlinum-nlist (line-number-at-pos))
         (line-move-visual -1 t)
